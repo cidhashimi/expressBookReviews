@@ -9,7 +9,7 @@ public_users.post("/register", (req, res) => {
   return res.status(300).json({ message: "Yet to be implemented" });
 });
 
-// Get the book list available in the shop
+
 // Get the book list available in the shop
 public_users.get("/", function (req, res) {
   // Convert the books array to JSON and send it as response
@@ -28,11 +28,35 @@ public_users.get('/isbn/:isbn', function (req, res) {
 });
 
 
-// Get book details based on author
+/// Get book details based on author
 public_users.get("/author/:author", function (req, res) {
-  //Write your code here
-  return res.status(300).json({ message: "Yet to be implemented" });
+  const { author } = req.params;
+
+  console.log("Author:", author); // Debugging statement
+
+  // Initialize an array to store books matching the provided author
+  const booksByAuthor = [];
+
+  // Iterate through the books array and check if the author matches
+  books.forEach(book => {
+    console.log("Book author:", book.author); // Debugging statement
+    if (book.author === author) {
+      // If a match is found, push the book details to the array
+      booksByAuthor.push(book);
+    }
+  });
+
+  console.log("Books by author:", booksByAuthor); // Debugging statement
+
+  // If no books are found for the provided author, return a 404 response
+  if (booksByAuthor.length === 0) {
+    return res.status(404).json({ message: "No books found for this author" });
+  }
+
+  // Return the array of books by the author
+  return res.status(200).json(booksByAuthor);
 });
+
 
 // Get all books based on title
 public_users.get("/title/:title", function (req, res) {
